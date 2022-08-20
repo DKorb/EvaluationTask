@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: familyapp
+  name: familyapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: familyapp
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        service: familyapp
+    spec:
+      containers:
+        - env:
+            - name: MYSQLDB_DOCKER_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQLDB_DOCKER_PASSWORD
+                  name: env
+            - name: MYSQLDB_DOCKER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQLDB_DOCKER_PORT
+                  name: env
+            - name: MYSQLDB_DOCKER_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQLDB_DOCKER_USER
+                  name: env
+            - name: MYSQLDB_FIRST_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQLDB_FIRST_DATABASE
+                  name: env
+            - name: MYSQLDB_LOCAL_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQLDB_LOCAL_PASSWORD
+                  name: env
+            - name: MYSQLDB_LOCAL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQLDB_LOCAL_PORT
+                  name: env
+            - name: MYSQLDB_LOCAL_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQLDB_LOCAL_USER
+                  name: env
+            - name: MYSQLDB_SECOND_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQLDB_SECOND_DATABASE
+                  name: env
+            - name: SPRING_FAMILY_APP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: SPRING_FAMILY_APP_PORT
+                  name: env
+            - name: SPRING_FAMILY_MEMBER_APP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: SPRING_FAMILY_MEMBER_APP_PORT
+                  name: env
+          image: dkorb/familyapp-k8s:latest
+          name: familyapp
+          ports:
+            - containerPort: 8020
+          resources: {}
+      restartPolicy: Always
